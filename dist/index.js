@@ -9128,7 +9128,7 @@ async function run() {
               jobHasError = true;
             }
           } else if (steps !== undefined && steps !== null) {
-            for (const step of steps) {
+            for (const step of withParallelSteps(steps)) {
               if (runAssertions(step['uses'], allowlist, isDryRun, relativePath)) {
                 jobHasError = true;
               }
@@ -9208,6 +9208,19 @@ function getYamlAttribute(yamlContents, attribute) {
     return yamlContents[attribute];
   }
   return undefined;
+}
+
+// A `parallel` step lists its own steps, so return those along with the top-level ones.
+function withParallelSteps(steps) {
+  const result = [];
+  for (const step of steps) {
+    result.push(step);
+    const parallel = getYamlAttribute(step, 'parallel');
+    if (Array.isArray(parallel)) {
+      result.push(...withParallelSteps(parallel));
+    }
+  }
+  return result;
 }
 
 function assertUsesVersion(uses) {

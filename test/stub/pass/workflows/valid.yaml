@@ -17,3 +17,8 @@ jobs:
   dockerstub:
     steps:
     - uses: docker://rhysd/actionlint@sha256:5f957b2a08d223e48133e1a914ed046bea12e578fe2f6ae4de47fdbe691a2468
+  parallelstub:
+    steps:
+    - parallel:
+      - uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
+      - run: echo stub
