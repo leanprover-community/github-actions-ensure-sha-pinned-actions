@@ -71,6 +71,7 @@ jest.test('workflow has unpinned error', () => {
     }
 
     jest.expect(result).toContain('actions/checkout@v1 is not pinned to a full length commit SHA.');
+    jest.expect(result).toContain('actions/setup-node@v4 is not pinned to a full length commit SHA.');
     jest.expect(result).not.toContain('No issues were found.');
 });
 
